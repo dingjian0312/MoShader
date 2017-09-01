@@ -14,7 +14,7 @@ public class FogWithNoise : PostEffectsBase {
 	}
 	
 	private Camera myCamera;
-	public Camera camera {
+	public Camera cameraComponent {
 		get {
 			if (myCamera == null) {
 				myCamera = GetComponent<Camera>();
@@ -27,7 +27,7 @@ public class FogWithNoise : PostEffectsBase {
 	public Transform cameraTransform {
 		get {
 			if (myCameraTransform == null) {
-				myCameraTransform = camera.transform;
+				myCameraTransform = cameraComponent.transform;
 			}
 			
 			return myCameraTransform;
@@ -61,9 +61,9 @@ public class FogWithNoise : PostEffectsBase {
 		if (material != null) {
 			Matrix4x4 frustumCorners = Matrix4x4.identity;
 			
-			float fov = camera.fieldOfView;
-			float near = camera.nearClipPlane;
-			float aspect = camera.aspect;
+			float fov = cameraComponent.fieldOfView;
+			float near = cameraComponent.nearClipPlane;
+			float aspect = cameraComponent.aspect;
 			
 			float halfHeight = near * Mathf.Tan(fov * 0.5f * Mathf.Deg2Rad);
 			Vector3 toRight = cameraTransform.right * halfHeight * aspect;
