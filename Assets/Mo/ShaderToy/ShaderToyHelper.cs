@@ -1,22 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[ExecuteInEditMode]
 public class ShaderToyHelper : MonoBehaviour
 {
-
-    private Material _material = null;
+    public Material _material = null;
 
     private bool _isDragging = false;
 
     // Use this for initialization
     void Start()
     {
-        Renderer render = GetComponent<Renderer>();
-        if (render != null)
-        {
-            _material = render.material;
-        }
-
         _isDragging = false;
     }
 
@@ -47,5 +41,10 @@ public class ShaderToyHelper : MonoBehaviour
     void OnMouseUp()
     {
         _isDragging = false;
+    }
+
+    void OnRenderImage(RenderTexture src, RenderTexture dst)
+    {
+        Graphics.Blit(src, dst, _material);
     }
 }
