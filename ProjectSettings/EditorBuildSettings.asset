@@ -5,6 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Mo/Test/DiscardDepthTest/DiscardDepthTest.unity
+  - enabled: 0
+    path: Assets/Test/DiscardDepthTest/DiscardDepthTest.unity
     guid: cc321200e2594c14392ea012be6df863
