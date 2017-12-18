@@ -6,6 +6,7 @@ using UnityEngine;
 public class SyncCamera : MonoBehaviour 
 {
     public bool sync = true;
+    public bool resume = true;
 
     private Vector3 lastPosition;
     private Quaternion lastRotation;
@@ -46,7 +47,7 @@ public class SyncCamera : MonoBehaviour
 
     void OnPostRender()
     {
-        if (sync)
+        if (sync && resume)
         {
             transform.position = lastPosition;
             transform.rotation = lastRotation;
