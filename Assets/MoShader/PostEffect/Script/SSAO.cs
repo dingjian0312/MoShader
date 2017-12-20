@@ -16,6 +16,9 @@ public class SSAO : PostEffectBase
     [Range(0.1f, 4)]
     public float intensity = 1;
 
+    [Range(0.1f, 4)]
+    public float blurSize = 1;
+
     private Camera camera;
     public Material material
     {
@@ -41,8 +44,20 @@ public class SSAO : PostEffectBase
             material.SetFloat("_Radius", radius);
             material.SetInt("_SampleCount", sampleCount);
             material.SetFloat("_Intensity", intensity);
-            material.SetMatrix("_ViewMatrix", camera.worldToCameraMatrix);
-            Graphics.Blit(src, dst, material);
+            RenderTexture aoBuffer = RenderTexture.GetTemporary(src.width, src.height, 0);
+            RenderTexture aoBlurBuffer = RenderTexture.GetTemporary(src.width, src.height, 0);
+            Graphics.Blit(src, aoBuffer, material, 0);
+
+            material.SetFloat("_BlurSize", blurSize);
+
+            Graphics.Blit(aoBuffer, aoBlurBuffer, material, 1);
+            Graphics.Blit(aoBlurBuffer, aoBuffer, material, 2);
+
+            material.SetTexture("_AOTex", aoBuffer);
+            Graphics.Blit(src, dst, material, 3);
+
+            RenderTexture.ReleaseTemporary(aoBuffer);
+            RenderTexture.ReleaseTemporary(aoBlurBuffer);
         }
         else
         {
