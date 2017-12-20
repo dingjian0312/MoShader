@@ -98,15 +98,19 @@
 				float ao = 0;
 				for (int s = 0; s < _SampleCount; ++s)
 				{
-					float3 v_s1 = PickSamplePoint(i.uv, s);
-					v_s1 = faceforward(v_s1, -viewNormal, v_s1); //faceforward(N,I,Ng)	如果Ng∙I<0，返回N；否则返回-N。
+					float3 s_dir = PickSamplePoint(i.uv, s);
+					s_dir = faceforward(s_dir, -viewNormal, s_dir); //faceforward(N,I,Ng)	如果Ng∙I<0，返回N；否则返回-N。
 					//采样点的相机空间坐标
-					float3 vpos_s1 = vpos_o + v_s1;
-					float4 spos_s1 = mul(unity_CameraProjection, float4(vpos_s1, 1));
-					float2 uv_s1_01 = (spos_s1.xy / spos_s1.w + 1.0) * 0.5;
+					float3 vpos_s1 = vpos_o + s_dir;
+					float depth_s1 = -vpos_s1.z; //采样点的相机深度
+					float4 clip_pos_s1 = mul(unity_CameraProjection, float4(vpos_s1, 1));
+					float2 uv_s1 = (clip_pos_s1.xy / clip_pos_s1.w + 1.0) * 0.5;
 					//采样点对应的深度图里的深度
-					float depth_s1 = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv_s1_01));
-					ao = ao + (depth_s1 < -vpos_s1.z);
+					float depth_tex = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, uv_s1));
+
+					//深度差太大的不连续空间
+					float rangeCheck= abs(depth_s1 - depth_tex) < _Radius ? 1.0 : 0.0;
+					ao = ao + ((depth_s1 > depth_tex) ? rangeCheck : 0);
 				}
 				ao = pow(ao*_Intensity/_SampleCount, kContrast);
 
