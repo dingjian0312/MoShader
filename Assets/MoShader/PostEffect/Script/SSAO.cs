@@ -16,10 +16,11 @@ public class SSAO : PostEffectBase
     [Range(0.1f, 4)]
     public float intensity = 1;
 
+    public bool enableBlur;
+
     [Range(0.1f, 4)]
     public float blurSize = 1;
 
-    private Camera camera;
     public Material material
     {
         get
@@ -30,11 +31,6 @@ public class SSAO : PostEffectBase
             }
             return ssaoMaterial;
         }
-    }
-
-    void OnEnable()
-    {
-        camera = GetComponent<Camera>();
     }
 
     void OnRenderImage(RenderTexture src, RenderTexture dst)
@@ -48,10 +44,12 @@ public class SSAO : PostEffectBase
             RenderTexture aoBlurBuffer = RenderTexture.GetTemporary(src.width, src.height, 0);
             Graphics.Blit(src, aoBuffer, material, 0);
 
-            material.SetFloat("_BlurSize", blurSize);
-
-            Graphics.Blit(aoBuffer, aoBlurBuffer, material, 1);
-            Graphics.Blit(aoBlurBuffer, aoBuffer, material, 2);
+            if (enableBlur)
+            {
+                material.SetFloat("_BlurSize", blurSize);
+                Graphics.Blit(aoBuffer, aoBlurBuffer, material, 1);
+                Graphics.Blit(aoBlurBuffer, aoBuffer, material, 2);
+            }
 
             material.SetTexture("_AOTex", aoBuffer);
             Graphics.Blit(src, dst, material, 3);
@@ -65,3 +63,4 @@ public class SSAO : PostEffectBase
         }
     }
 }
+
