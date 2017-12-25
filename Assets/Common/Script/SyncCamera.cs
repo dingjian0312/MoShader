@@ -23,14 +23,17 @@ public class SyncCamera : MonoBehaviour
 
     void OnRenderObject()
     {
+#if UNITY_EDITOR
         if (!Application.isPlaying)
         {
             UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
         }
+#endif
     }
 
     void OnPreCull()
     {
+#if UNITY_EDITOR
         if (sync)
         {
             UnityEditor.SceneView sceneView = UnityEditor.SceneView.lastActiveSceneView;
@@ -43,6 +46,7 @@ public class SyncCamera : MonoBehaviour
                 transform.rotation = t.rotation;
             }
         }
+#endif
     }
 
     void OnPostRender()

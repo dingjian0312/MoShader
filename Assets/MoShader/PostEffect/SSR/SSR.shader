@@ -99,7 +99,7 @@
 			float2 hitPixel; 
 			float3 hitPoint;
 			float iterationCount;
-			bool hit = RayMarching(viewPos, reflectDir, jitter, hitPixel, hitPoint, iterationCount, i.uv.x > 0.5);
+			//bool hit = RayMarching(viewPos, reflectDir, jitter, hitPixel, hitPoint, iterationCount, i.uv.x > 0.5);
 
 
 			fixed4 col = tex2D(_MainTex, i.uv);
