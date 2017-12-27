@@ -66,7 +66,7 @@
 					{
 						shadowUV = shadowUV + float2(s1, s2) * (1/_ShadowMapSize);
 						//shadow += i.lightDepth > DecodeFloatRG(tex2D(_ShadowMap, shadowUV)) + _ShadowBias;
-						shadow += i.lightDepth > tex2D(_ShadowMap, shadowUV).b + _ShadowBias;
+						shadow += i.lightDepth > DecodeFloatRGBA(tex2D(_ShadowMap, shadowUV)) + _ShadowBias;
 					}
 				}
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-[RequireComponent(typeof(MeshRenderer))]
 public class LightCamera : MonoBehaviour 
 {
     public Shader depthShader;
@@ -15,24 +14,24 @@ public class LightCamera : MonoBehaviour
 
 
     public RenderTexture ShadowMap = null;
-    private int ShadowMapSize = 2048;
+    private int ShadowMapSize = 4096;
     
 
     void OnEnable()
     {
-        if (ShadowMap.width != ShadowMapSize || ShadowMap.height != ShadowMapSize)
+        ShadowMap = new RenderTexture(ShadowMapSize, ShadowMapSize, 16);
+        lightCamera.targetTexture = ShadowMap;
+    }
+
+    void OnDisable()
+    {
+        if (ShadowMap)
         {
             DestroyImmediate(ShadowMap);
         }
-
-        if (!ShadowMap)
-        {
-            ShadowMap = new RenderTexture(ShadowMapSize, ShadowMapSize, 16);
-            lightCamera.targetTexture = ShadowMap;
-        }
     }
 
-    void OnWillRenderObject()
+    void OnPreRender()
     {
         Camera curCamera = renderCamera;
         float near = curCamera.nearClipPlane;

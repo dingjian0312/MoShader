@@ -45,7 +45,7 @@
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float2 shadowUV = i.shadowPos * 0.5 + 0.5;
-				fixed4 col = tex2D(_ShadowMap, shadowUV);
+				fixed4 col = DecodeFloatRGBA(tex2D(_ShadowMap, shadowUV));
 
 				if (shadowUV.x <0 || shadowUV.x > 1)
 					col = 0;

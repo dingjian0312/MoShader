@@ -35,7 +35,7 @@
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				fixed4 col = i.depth;
+				fixed4 col = EncodeFloatRGBA(i.depth);
 				return col;
 			}
 			ENDCG
