@@ -18,8 +18,6 @@
 			
 			#include "UnityCG.cginc"
 
-			
-
 			struct v2f
 			{
 				float4 vertex : SV_POSITION;
@@ -60,18 +58,21 @@
 				float2 shadowUV = i.shadowPos * 0.5 + 0.5;
 
 				float shadow = 0;
-				for (int s1 = -1; s1 <= 1; ++s1)
+				for (float s1 = -2; s1 <= 2; ++s1)
 				{
-					for (int s2 = -1; s2 <= 1; ++s2)
+					for (float s2 = -2; s2 <= 2; ++s2)
 					{
-						shadowUV = shadowUV + float2(s1, s2) * (1/_ShadowMapSize);
-						//shadow += i.lightDepth > DecodeFloatRG(tex2D(_ShadowMap, shadowUV)) + _ShadowBias;
-						shadow += i.lightDepth > DecodeFloatRGBA(tex2D(_ShadowMap, shadowUV)) + _ShadowBias;
+						float2 offsetUV = shadowUV + float2(s1, s2) * (1/_ShadowMapSize);
+						if (offsetUV.x < 0 || offsetUV.y < 0 || offsetUV.x > 1 || offsetUV.y > 1)
+						{
+							offsetUV = shadowUV;
+						}
+						shadow += (i.lightDepth > (DecodeFloatRGBA(tex2D(_ShadowMap, offsetUV)) + _ShadowBias));
 					}
 				}
 
-				shadow = shadow / 9;
-				col = col * (1- shadow * 0.8);
+				shadow = shadow / 25;
+				col = col * (1- shadow) ;
 				return col;
 			}
 			ENDCG

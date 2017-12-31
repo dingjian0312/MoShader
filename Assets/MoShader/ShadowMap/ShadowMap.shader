@@ -40,7 +40,6 @@
 			float4 frag (v2f i) : SV_Target
 			{
 				float4 col = EncodeFloatRGBA(i.depth);
-				//col.b = i.depth;
 				return col;
 			}
 			ENDCG
