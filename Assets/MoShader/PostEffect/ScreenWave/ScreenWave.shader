@@ -19,9 +19,13 @@
 			#pragma fragment frag
 			
 			sampler2D _MainTex;  
-			float _speed;
-			float _distanceFactor;
-			float _amplitude;
+			float _speed;	//速度
+			float _density; //密度
+			float _amplitude; //振幅
+			float _radius;	//当前扩散的半径
+			float _width;	//水圈的宽度
+			float2 _startPos;
+
 
 			struct v2f 
 			{
@@ -42,12 +46,15 @@
 			fixed4 frag(v2f i) : SV_Target 
 			{
 				float2 screenPos = i.screenPos.xy / i.screenPos.w;
-				float2 delta = screenPos-float2(0.5, 0.5);
+				float2 delta = screenPos-_startPos;
 				delta = delta* float2(_ScreenParams.x/_ScreenParams.y, 1); //圆形扩散
 				float dis = length(delta);
-				float2 uv_offset = normalize(delta) * sin(dis*_distanceFactor + _Time.y*_speed)*_amplitude;
+				float2 uv_offset = 0;
+				if (abs(_radius-dis) < _width) 
+				{
+					uv_offset = normalize(delta) * sin(dis*_density + _Time.y*_speed)*_amplitude;
+				}
 				float4 col = tex2D(_MainTex, i.uv+uv_offset);
-				//col += length(uv_offset)*10;
 				return col;
  			}
 			
