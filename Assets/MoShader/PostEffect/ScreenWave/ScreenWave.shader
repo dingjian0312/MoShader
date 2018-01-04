@@ -22,10 +22,13 @@
 			float _speed;	//速度
 			float _density; //密度
 			float _amplitude; //振幅
-			float _radius;	//当前扩散的半径
+			
 			float _width;	//水圈的宽度
-			float2 _startPos;
 
+			#define MAX_POINT_NUMBER 20
+			float4 _startPos[MAX_POINT_NUMBER];
+			float _radius[MAX_POINT_NUMBER];	//当前扩散的半径
+			int _pointNumber;
 
 			struct v2f 
 			{
@@ -46,15 +49,26 @@
 			fixed4 frag(v2f i) : SV_Target 
 			{
 				float2 screenPos = i.screenPos.xy / i.screenPos.w;
-				float2 delta = screenPos-_startPos;
-				delta = delta* float2(_ScreenParams.x/_ScreenParams.y, 1); //圆形扩散
-				float dis = length(delta);
-				float2 uv_offset = 0;
-				if (abs(_radius-dis) < _width) 
+
+				float4 col = tex2D(_MainTex, i.uv);
+				//序号越小越新
+				for (int index = _pointNumber-1; index >= 0 ; --index)
 				{
-					uv_offset = normalize(delta) * sin(dis*_density + _Time.y*_speed)*_amplitude;
+					float2 delta = screenPos-_startPos[index];
+					delta = delta* float2(_ScreenParams.x/_ScreenParams.y, 1); //圆形扩散
+					float dis = length(delta);
+					float2 uv_offset = 0;
+					if (abs(_radius[index]-dis) < _width)
+					{
+						uv_offset = normalize(delta) * sin(dis*_density + _Time.y*_speed)*_amplitude;
+					}
+
+					//保持前面的水波
+					if (length(uv_offset) > 0.001) 
+					{
+						col = tex2D(_MainTex, i.uv+uv_offset);
+					}
 				}
-				float4 col = tex2D(_MainTex, i.uv+uv_offset);
 				return col;
  			}
 			
