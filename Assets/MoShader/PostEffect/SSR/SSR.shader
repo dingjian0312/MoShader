@@ -49,9 +49,15 @@
 			
 			float3 rayEnd = rayOrigin + rayDirection*rayLength;
 			
-			//线段转换到屏幕空间
+			//两端点转换到齐次裁减空间
 			float4 clipStart = mul(unity_CameraProjection, float4(rayOrigin, 1));
 			float4 clipEnd = mul(unity_CameraProjection, float4(rayEnd, 1));
+
+			//光栅化要对1/z进行插值
+			float zStart = 1 / clipStart.w;
+			float zEnd = 1 / clipEnd.w;
+
+			
 			float2 screenStart = clipStart.xy/clipStart.w;	
 			float2 screenEnd = clipEnd.xy/clipEnd.w;
 			
