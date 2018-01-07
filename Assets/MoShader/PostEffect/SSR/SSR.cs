@@ -13,7 +13,7 @@ public class SSR : PostEffectBase
     
 
 
-    private Camera camera;
+    private Camera ssrCamera;
     private Camera backCamera;
     private RenderTexture backDepthTexture;
 
@@ -31,15 +31,15 @@ public class SSR : PostEffectBase
 
     void OnEnable()
     {
-        camera = GetComponent<Camera>();
+        ssrCamera = GetComponent<Camera>();
     }
 
     void OnPreCull()
     {
         //渲染背面深度
         int downsample = backDepthDownsample + 1;
-		int width = camera.pixelWidth / downsample;
-		int height = camera.pixelHeight / downsample;
+		int width = ssrCamera.pixelWidth / downsample;
+		int height = ssrCamera.pixelHeight / downsample;
 
         backDepthTexture = RenderTexture.GetTemporary(width, height, 16, RenderTextureFormat.ARGB32);
         if (!backCamera)
@@ -48,7 +48,7 @@ public class SSR : PostEffectBase
             go.hideFlags = HideFlags.HideAndDontSave;
             backCamera = go.AddComponent<Camera>();
         }
-        backCamera.CopyFrom(camera);
+        backCamera.CopyFrom(ssrCamera);
         backCamera.renderingPath = RenderingPath.Forward;
         backCamera.enabled = false;
         backCamera.backgroundColor = Color.white;

@@ -5,7 +5,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class LightDepthRender : MonoBehaviour 
 {
-    public Light light;
+    public Light shadowLight;
     const int SHADOW_MAP_SIZE = 4096;
     public Shader depthShader;
     private RenderTexture shadowmap;
@@ -13,7 +13,7 @@ public class LightDepthRender : MonoBehaviour
 	void OnPreRender()
     {
         shadowmap = RenderTexture.GetTemporary(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 16);
-        Camera camera = light.GetComponent<Camera>();
+        Camera camera = shadowLight.GetComponent<Camera>();
         camera.targetTexture = shadowmap;
         camera.RenderWithShader(depthShader, "RenderType");
         Shader.SetGlobalTexture("_ShadowMap", shadowmap);
