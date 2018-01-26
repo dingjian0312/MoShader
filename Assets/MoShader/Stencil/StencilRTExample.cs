@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//经测试该脚本5.6.0有效，5.6.2以后无效
 public class StencilRTExample : MonoBehaviour
 {
 
@@ -24,18 +23,19 @@ public class StencilRTExample : MonoBehaviour
         cameraComponent.targetTexture = cameraRenderTexture;
     }
 
+    void OnPostRender()
+    {
+        //cameraComponent.targetTexture = null;
+    }
 
     void OnRenderImage(RenderTexture src, RenderTexture dst)
     {
         RenderTexture buffer = RenderTexture.GetTemporary(src.width, src.height);
-        Graphics.SetRenderTarget(buffer.colorBuffer, cameraRenderTexture.depthBuffer);
+        Graphics.SetRenderTarget(buffer.colorBuffer, src.depthBuffer);
         Graphics.Blit(src, rtCopy);
         Graphics.Blit(src, postStencilRed);
 
-        RenderTexture.active = null;
-        cameraComponent.targetTexture = null;
-        Graphics.Blit(buffer, null as RenderTexture);
-
+        Graphics.Blit(buffer, dst);
         RenderTexture.ReleaseTemporary(buffer);
     }
 }
