@@ -31,7 +31,7 @@
 
 			fixed4 frag (v2f i) : SV_Target
 			{
-				return float4(i.depth, 0, 0, 0);
+				return float4(i.depth, i.depth, i.depth, 1);
 			}
 			ENDCG
 		}

@@ -10,7 +10,11 @@ public class SSR : PostEffectBase
     [Range(0, 8)]
     public int backDepthDownsample = 0;
 
-    
+    [Range(0, 5)]
+    public float thickness = 1;
+
+    [Range(0, 1)]
+    public float stepLength = 0.2f;
 
 
     private Camera ssrCamera;
@@ -32,6 +36,7 @@ public class SSR : PostEffectBase
     void OnEnable()
     {
         ssrCamera = GetComponent<Camera>();
+        //ssrCamera.depthTextureMode = DepthTextureMode.Depth;
     }
 
     void OnPreCull()
@@ -61,6 +66,10 @@ public class SSR : PostEffectBase
     {
         if (material != null)
         {
+            material.SetTexture("_BackFaceDepthTex", backDepthTexture);
+            material.SetFloat("_thickness", thickness);
+            material.SetFloat("_stepLength", stepLength);
+            
             Graphics.Blit(src, dst, material);
         }
         else

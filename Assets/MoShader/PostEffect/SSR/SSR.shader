@@ -29,16 +29,28 @@
 		sampler2D _CameraGBufferTexture1;
 		sampler2D _CameraGBufferTexture2;
 		sampler2D _CameraDepthTexture;
+		sampler2D _BackFaceDepthTex;
+
 		float _MaxRayDistance;
 		float _RenderBufferSize;
+		int _Iterations;
+		float _PixelZSize;
 
-		inline bool RayMarching( float3 rayOrigin, float3 rayDirection, float jitter, out float2 hitPixel, 
+		//zB<zA 判断线段zB-zA 是否与表面相交
+		/*inline bool RayIntersectsDepthBF( float zA, float zB, float2 uv)
+		{
+			float cameraZ = Linear01Depth(tex2D( _CameraDepthTexture, uv)) * -_ProjectionParams.z;	
+			float backZ = tex2D(_BackFaceDepthTex, uv) * -_ProjectionParams.z;
+			return zB <= cameraZ && zA >= backZ - _PixelZSize;
+		}
+
+		inline bool RayMarching( float3 rayStart, float3 rayDirection, float jitter, out float2 hitPixel, 
 								out float3 hitPoint, out float iterationCount, bool debugHalf) 
 		{
-			float limitLength = (-_ProjectionParams.y - rayOrigin.z) / rayDirection.z;
+			float limitLength = (-_ProjectionParams.y - rayStart.z) / rayDirection.z;
 			float rayLength;
 			//限制在远近平面之内
-			if (rayOrigin.z + rayDirection.z * _MaxRayDistance > -_ProjectionParams.y)
+			if (rayStart.z + rayDirection.z * _MaxRayDistance > -_ProjectionParams.y)
 			{
 				rayLength = limitLength;
 			}
@@ -47,19 +59,21 @@
 				rayLength = _MaxRayDistance;
 			}
 			
-			float3 rayEnd = rayOrigin + rayDirection*rayLength;
+			float3 rayEnd = rayStart + rayDirection*rayLength;
 			
 			//两端点转换到齐次裁减空间
-			float4 clipStart = mul(unity_CameraProjection, float4(rayOrigin, 1));
+			float4 clipStart = mul(unity_CameraProjection, float4(rayStart, 1));
 			float4 clipEnd = mul(unity_CameraProjection, float4(rayEnd, 1));
 
 			//光栅化要对1/z进行插值
-			float zStart = 1 / clipStart.w;
-			float zEnd = 1 / clipEnd.w;
+			float inverseW1 = 1 / clipStart.w;
+			float inverseW2 = 1 / clipEnd.w;
+
+			float3 viewInterPos
 
 			
-			float2 screenStart = clipStart.xy/clipStart.w;	
-			float2 screenEnd = clipEnd.xy/clipEnd.w;
+			float2 screenStart = clipStart.xy * inverseW1;	
+			float2 screenEnd = clipEnd.xy * inverseW2;
 			
 			float2 delta = screenEnd - screenStart;
 			bool permute = false;
@@ -72,9 +86,28 @@
 			}
 			
 			float stepDir = sign(delta.x);	//如果x>0返回1, x<0返回-1, 否则返回0	
+			float inversedx = stepDir / delta.x; 
 
+			//求每一次步进，各变量的增量
+			float3 dRay = (rayEnd - rayStart) * invdx;
+			float dInverseW = (inverseW2 - inverseW1) * invdx; 
+			float2 dScreen = float2(stepDir, delta.y * invdx); 
+
+			float zA = 0.0, zB = 0.0;
+			bool intersect = false;
+			float3 curRayPoint;
+			float curInverseW;
+			float2 curScreenPoint;
+
+			for (int i = 0;  i < _Iterations && intersect == false; ++i)
+			{
+				curRayPoint = rayStart
+
+				zA = zB;
+				zB = (dPQK.z * 0.5 + pqk.z) / (dPQK.w * 0.5 + pqk.w);
+			}
 			return true;
-		}
+		}*/
 
 		fixed4 frag (v2f i) : SV_Target
 		{
