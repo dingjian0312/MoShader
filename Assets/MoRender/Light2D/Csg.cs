@@ -66,7 +66,7 @@ public class Csg : MonoBehaviour
     float Trace(Vector2 p, Vector2 d)
     {
         float t = 0.0f;
-        Vector2 c = new Vector2(0.5f, 0.5f);
+        //Vector2 c = new Vector2(0.5f, 0.5f);
         for (int i = 0; i < MAX_STEP && t < MAX_DISTANCE; i++)
         {
             Result r = Scene(p + d * t);
