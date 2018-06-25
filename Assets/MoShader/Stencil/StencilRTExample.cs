@@ -35,7 +35,7 @@ public class StencilRTExample : MonoBehaviour
         Graphics.Blit(src, rtCopy);
         Graphics.Blit(src, postStencilRed);
 
-        Graphics.Blit(buffer, dst);
+        Graphics.Blit(buffer, null as RenderTexture);
         RenderTexture.ReleaseTemporary(buffer);
     }
 }

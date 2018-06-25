@@ -440,6 +440,7 @@ GameObject:
   - component: {fileID: 2016140680}
   - component: {fileID: 2016140678}
   - component: {fileID: 2016140677}
+  - component: {fileID: 2016140683}
   - component: {fileID: 2016140682}
   - component: {fileID: 2016140679}
   m_Layer: 0
@@ -469,7 +470,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2016140676}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f219c53386def1d40b9b0fcbeff4241f, type: 3}
   m_Name: 
@@ -540,3 +541,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   postStencilRed: {fileID: 2100000, guid: d84fa2e01cdddb94487a8948ba942d76, type: 2}
   rtCopy: {fileID: 2100000, guid: 3efd64e718f9ca94d94928adb002a488, type: 2}
+--- !u!114 &2016140683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2016140676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ddabf7e42484243a3518540c2786e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  postStencilRed: {fileID: 2100000, guid: d84fa2e01cdddb94487a8948ba942d76, type: 2}
+  rtCopy: {fileID: 2100000, guid: 3efd64e718f9ca94d94928adb002a488, type: 2}
+  rtCopyZWrite: {fileID: 2100000, guid: cb59140ff6e7e7e428ce680ee2313f78, type: 2}
