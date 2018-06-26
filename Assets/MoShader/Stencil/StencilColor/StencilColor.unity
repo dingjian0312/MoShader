@@ -780,6 +780,7 @@ GameObject:
   - component: {fileID: 2016140682}
   - component: {fileID: 2016140679}
   - component: {fileID: 2016140684}
+  - component: {fileID: 2016140685}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -888,7 +889,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2016140676}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09ddabf7e42484243a3518540c2786e3, type: 3}
   m_Name: 
@@ -903,9 +904,22 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2016140676}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71cf95183e0843a4697cce3a671a0881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stencilColor: {fileID: 2100000, guid: 5e6214ac324cde4469d0232c00f3be13, type: 2}
+--- !u!114 &2016140685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2016140676}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce9d3e5994a8a9d49b701d892a205163, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stencilColorQuad: {fileID: 2100000, guid: 39cb53360af409743820cdeb03beb289, type: 2}
+  Quad: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}

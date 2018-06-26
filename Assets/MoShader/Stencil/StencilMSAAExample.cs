@@ -99,7 +99,7 @@ public class StencilMSAAExample : MonoBehaviour
             commandBuffer.DrawMesh(Quad, Matrix4x4.identity, postStencilRedQuad);
 
             commandBuffer.SetGlobalTexture("_CachedScreenImage", cachedScreenImageID);
-            camera.AddCommandBuffer(CameraEvent.AfterForwardAlpha, commandBuffer);
+            camera.AddCommandBuffer(CameraEvent.AfterForwardOpaque, commandBuffer);
         }
     }
 

@@ -8,11 +8,11 @@
 	{
 		Stencil
 		{
-			Ref 128
+			Ref 2
 			Comp Equal
 		}
 		
-		ZTest Always ZWrite Off Cull Off
+		ZTest Always  Cull Off
 		Pass
 		{
 			CGPROGRAM
