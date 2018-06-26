@@ -1,4 +1,4 @@
-﻿Shader "Mo/PostStencilRed"
+﻿Shader "Mo/PostStencilRedQuad"
 {
 	Properties
 	{
@@ -8,7 +8,7 @@
 	{
 		Stencil
 		{
-			Ref 128
+			Ref 2
 			Comp Equal
 		}
 		
@@ -33,7 +33,7 @@
 			v2f vert (appdata_img v)
 			{
 				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
+				o.vertex = float4(v.vertex.xy * 2, 1, 1);
 				o.uv = v.texcoord;
 				return o;
 			}
